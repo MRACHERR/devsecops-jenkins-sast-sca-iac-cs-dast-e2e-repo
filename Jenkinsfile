@@ -18,15 +18,19 @@ pipeline {
         }
       }
     }
-    stage('Build') {
-      steps {
-        withDockerRegistry([credentialsId: "dockerlogin", url: ""]) {
-          script {
-            app = docker.build("anasschhh/testeb")
-          }
-        }
+stage('Build') {
+  steps {
+    withDockerRegistry([credentialsId: "dockerlogin", url: "https://hub.docker.com/repository/docker/anasschhh/testeb/general"]) {
+      script {
+        echo "Building Docker image..."
+        app = docker.build("asecurityguru/testeb")
+        echo "Docker image built successfully."
+        app.push()
+        echo "Docker image pushed to registry."
       }
     }
+  }
+}
     stage('RunContainerScan') {
       steps {
         withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
