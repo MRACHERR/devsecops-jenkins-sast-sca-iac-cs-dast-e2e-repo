@@ -15,6 +15,8 @@ pipeline {
       steps {
         withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
           bat("mvn -Dmaven.test.failure.ignore verify sonar:sonar -Dsonar.login=squ_dd18ace11e709f2270cfbb884193a7dbf4ee6b9a -Dsonar.projectKey=easybuggy -Dsonar.host.url=http://localhost:9000/")
+          script {
+          echo "Sonar finish here"
         }
       }
     }
@@ -23,7 +25,7 @@ stage('Build') {
     withDockerRegistry([credentialsId: "dockerlogin", url: "https://hub.docker.com/repository/docker/anasschhh/testeb/general"]) {
       script {
         echo "Building Docker image..."
-        app = docker.build("asecurityguru/testeb")
+        app = docker.build("anasschhh/testeb")
         echo "Docker image built successfully."
         app.push()
         echo "Docker image pushed to registry."
