@@ -20,11 +20,20 @@ pipeline {
       }
     }
     stage('Build') {
-      steps {
-          script {
-            echo "helo ddd"
-          }
+       steps {
+    script {
+      // Hardcoded Docker registry credentials
+      def registryCredentials = [
+        credentialsId: 'dockerlogin',
+        url: 'https://registry.example.com' // Replace with your Docker registry URL
+      ]
+
+      // Use the hardcoded credentials for Docker registry
+      withDockerRegistry(registryCredentials) {
+        app = docker.build("anasschhh/testeb")
       }
+    }
+  }
     }
     stage('RunContainerScan') {
       steps {
