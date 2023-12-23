@@ -5,6 +5,7 @@ pipeline {
         JAVA_HOME = "C:\\Program Files\\Java\\jdk-11"
         // Optionally, update the PATH variable to include the JDK bin directory
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
+        
     }
   tools {
     maven 'Maven_3_8_7'
@@ -20,11 +21,9 @@ pipeline {
     }
     stage('Build') {
       steps {
-        withDockerRegistry([credentialsId: "dockerlogin", url: ""]) {
           script {
-            app = docker.build("anasschhh/testeb")
+            echo "helo ddd"
           }
-        }
       }
     }
     stage('RunContainerScan') {
