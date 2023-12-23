@@ -1,5 +1,11 @@
 pipeline {
   agent any
+  environment {
+        // Set the JAVA_HOME variable to the path of your JDK installation
+        JAVA_HOME = "C:\Program Files\Java\jdk-1.8\jre"
+        // Optionally, update the PATH variable to include the JDK bin directory
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
+    }
   tools {
     maven 'Maven_3_8_7'
   }
