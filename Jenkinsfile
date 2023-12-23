@@ -2,7 +2,7 @@ pipeline {
   agent any
   environment {
         // Set the JAVA_HOME variable to the path of your JDK installation
-        JAVA_HOME = "C:\\Program Files\\Java\\jdk-1.8\\jre"
+        JAVA_HOME = "C:\\Program Files\\Java\\jdk-11"
         // Optionally, update the PATH variable to include the JDK bin directory
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
     }
