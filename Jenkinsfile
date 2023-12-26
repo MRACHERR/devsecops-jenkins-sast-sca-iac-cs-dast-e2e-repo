@@ -18,13 +18,16 @@ pipeline {
         }
       }
     }
-    stage('Build') {
+    stage('RunSnykSCA') {
       steps {
-        withDockerRegistry([credentialsId: "dockerlogin", url: ""]) {
-          script {
-            app = docker.build("anasschhh/testeb")
-          }
+        withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+          bat("mvn snyk:test -fn")
         }
+      }
+    }
+    stage('RunDASTUsingZAP') {
+      steps {
+        bat("C:\\Users\\ANASS\\OneDrive\\Documents\\ZAP_2.12.0\\zap.sh -port 9393 -cmd -quickurl https://www.example.com -quickprogress -quickout C:\\Users\\ANASS\\OneDrive\\Documents\\ZAP_2.12.0\\Output.html")
       }
     }
     stage('RunContainerScan') {
@@ -40,19 +43,18 @@ pipeline {
         }
       }
     }
-    stage('RunSnykSCA') {
+
+    stage('Build') {
       steps {
-        withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-          bat("mvn snyk:test -fn")
+        withDockerRegistry([credentialsId: "dockerlogin", url: ""]) {
+          script {
+            app = docker.build("anasschhh/testeb")
+          }
         }
       }
     }
-    stage('RunDASTUsingZAP') {
-      steps {
-        bat("C:\\Users\\ANASS\\OneDrive\\Documents\\ZAP_2.12.0\\zap.sh -port 9393 -cmd -quickurl https://www.example.com -quickprogress -quickout C:\\Users\\ANASS\\OneDrive\\Documents\\ZAP_2.12.0\\Output.html")
-      }
-    }
-
+    
+    
     stage('checkov') {
       steps {
         bat("checkov -s -f main.tf")
